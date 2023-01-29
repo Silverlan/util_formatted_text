@@ -9,10 +9,8 @@
 #include <limits>
 #include <memory>
 
-namespace util
-{
-	namespace text
-	{
+namespace util {
+	namespace text {
 		using TextLength = size_t;
 		using TextOffset = size_t;
 

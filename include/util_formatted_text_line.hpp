@@ -12,21 +12,17 @@
 #include <optional>
 #include <memory>
 
-namespace util
-{
-	namespace text
-	{
+namespace util {
+	namespace text {
 		class FormattedText;
 		class TextTagComponent;
 		class LineStartAnchorPoint;
 		class AnchorPoint;
-		class FormattedTextLine
-			: public std::enable_shared_from_this<FormattedTextLine>
-		{
-		public:
-			static PFormattedTextLine Create(FormattedText &text,const std::string &line="");
-			FormattedTextLine(const FormattedTextLine&)=delete;
-			FormattedTextLine &operator=(const FormattedTextLine&)=delete;
+		class FormattedTextLine : public std::enable_shared_from_this<FormattedTextLine> {
+		  public:
+			static PFormattedTextLine Create(FormattedText &text, const std::string &line = "");
+			FormattedTextLine(const FormattedTextLine &) = delete;
+			FormattedTextLine &operator=(const FormattedTextLine &) = delete;
 			~FormattedTextLine();
 			const TextLine &GetFormattedLine() const;
 			TextLine &GetFormattedLine();
@@ -35,11 +31,11 @@ namespace util
 			TextLine &GetUnformattedLine();
 
 			CharOffset AppendString(const util::Utf8StringView &str);
-			std::optional<CharOffset> InsertString(const util::Utf8StringView &str,CharOffset charOffset);
-			util::Utf8StringView Substr(CharOffset offset,TextLength len=UNTIL_THE_END) const;
-			std::optional<TextLength> Erase(CharOffset startOffset,TextLength len=UNTIL_THE_END,util::Utf8String *outErasedString=nullptr);
-			bool Move(CharOffset startOffset,TextLength len,FormattedTextLine &moveTarget,CharOffset targetCharOffset=LAST_CHAR);
-			
+			std::optional<CharOffset> InsertString(const util::Utf8StringView &str, CharOffset charOffset);
+			util::Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
+			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, util::Utf8String *outErasedString = nullptr);
+			bool Move(CharOffset startOffset, TextLength len, FormattedTextLine &moveTarget, CharOffset targetCharOffset = LAST_CHAR);
+
 			std::vector<util::TSharedHandle<TextTagComponent>> &GetTagComponents();
 			const std::vector<util::TSharedHandle<TextTagComponent>> &GetTagComponents() const;
 			std::vector<util::TWeakSharedHandle<AnchorPoint>> &GetAnchorPoints();
@@ -59,11 +55,11 @@ namespace util
 			TextLength GetAbsFormattedLength() const;
 			TextLength GetFormattedLength() const;
 			std::optional<CharOffset> GetRelativeOffset(TextOffset offset) const;
-			bool IsInRange(TextOffset offset,TextLength len=1) const;
+			bool IsInRange(TextOffset offset, TextLength len = 1) const;
 			std::optional<char> GetChar(CharOffset offset) const;
 			CharOffset GetFormattedCharOffset(CharOffset offset) const;
 			CharOffset GetUnformattedCharOffset(CharOffset offset) const;
-			util::TSharedHandle<AnchorPoint> CreateAnchorPoint(CharOffset charOffset,bool allowOutOfBounds=false);
+			util::TSharedHandle<AnchorPoint> CreateAnchorPoint(CharOffset charOffset, bool allowOutOfBounds = false);
 
 			void AppendCharacter(int32_t c);
 			TextLine &Format();
@@ -72,8 +68,8 @@ namespace util
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 			bool Validate(std::stringstream &msg) const;
 #endif
-		protected:
-			FormattedTextLine(FormattedText &text,const std::string &line="");
+		  protected:
+			FormattedTextLine(FormattedText &text, const std::string &line = "");
 			void Initialize(LineIndex lineIndex);
 			void SetIndex(LineIndex lineIndex);
 			void DetachAnchorPoint(const AnchorPoint &anchorPoint);
@@ -81,13 +77,13 @@ namespace util
 
 			// oldLineLen = original length of this line before the modification that caused the shift
 			// was applied
-			void ShiftAnchors(CharOffset startOffset,TextLength len,ShiftOffset shiftAmount,TextLength oldLineLen);
-			std::vector<TSharedHandle<AnchorPoint>> DetachAnchorPoints(CharOffset startOffset,TextLength len=UNTIL_THE_END);
-			void AttachAnchorPoints(std::vector<TSharedHandle<AnchorPoint>> &anchorPoints,ShiftOffset shiftOffset=0);
-			util::TSharedHandle<TextTagComponent> ParseTagComponent(CharOffset offset,const util::Utf8StringView &str);
+			void ShiftAnchors(CharOffset startOffset, TextLength len, ShiftOffset shiftAmount, TextLength oldLineLen);
+			std::vector<TSharedHandle<AnchorPoint>> DetachAnchorPoints(CharOffset startOffset, TextLength len = UNTIL_THE_END);
+			void AttachAnchorPoints(std::vector<TSharedHandle<AnchorPoint>> &anchorPoints, ShiftOffset shiftOffset = 0);
+			util::TSharedHandle<TextTagComponent> ParseTagComponent(CharOffset offset, const util::Utf8StringView &str);
 			friend FormattedText;
 			friend AnchorPoint;
-		private:
+		  private:
 			FormattedText &m_text;
 			util::TSharedHandle<LineStartAnchorPoint> m_startAnchorPoint = nullptr;
 			TextOffset m_formattedStartOffset = 0;
@@ -98,7 +94,7 @@ namespace util
 			LineIndex m_lineIndex = INVALID_LINE_INDEX;
 			std::vector<util::TSharedHandle<TextTagComponent>> m_tagComponents = {};
 			std::vector<util::TWeakSharedHandle<AnchorPoint>> m_anchorPoints = {};
-			
+
 			bool m_bDirty = false;
 		};
 	};

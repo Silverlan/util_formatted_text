@@ -10,24 +10,21 @@
 #include <memory>
 #include <vector>
 
-namespace util
-{
-	namespace text
-	{
+namespace util {
+	namespace text {
 		class FormattedTextLine;
 		class LineStartAnchorPoint;
-		class AnchorPoint
-		{
-		public:
-			template<class TAnchorPoint=AnchorPoint>
-				static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line,bool allowOutOfBounds=false);
-			virtual ~AnchorPoint()=default;
+		class AnchorPoint {
+		  public:
+			template<class TAnchorPoint = AnchorPoint>
+			static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line, bool allowOutOfBounds = false);
+			virtual ~AnchorPoint() = default;
 			LineIndex GetLineIndex() const;
 			TextOffset GetTextCharOffset() const;
 			FormattedTextLine &GetLine() const;
 			bool IsValid() const;
 
-			AnchorPoint &operator=(const AnchorPoint&)=delete;
+			AnchorPoint &operator=(const AnchorPoint &) = delete;
 			// TODO: Replace these with operator<=> once C++-20 is released
 			bool operator==(const AnchorPoint &other) const;
 			bool operator!=(const AnchorPoint &other) const;
@@ -35,7 +32,7 @@ namespace util
 			bool operator>(const AnchorPoint &other) const;
 			bool operator<=(const AnchorPoint &other) const;
 			bool operator>=(const AnchorPoint &other) const;
-			
+
 			void SetLine(FormattedTextLine &line);
 			LineStartAnchorPoint *GetParent();
 			void SetParent(LineStartAnchorPoint &parent);
@@ -43,7 +40,7 @@ namespace util
 			void ClearLine();
 			bool IsAttachedToLine(FormattedTextLine &line) const;
 			virtual bool IsLineStartAnchorPoint() const;
-			bool IsInRange(TextOffset startOffset,TextLength len) const;
+			bool IsInRange(TextOffset startOffset, TextLength len) const;
 			bool ShouldAllowOutOfBounds() const;
 
 			virtual void ShiftByOffset(ShiftOffset offset);
@@ -51,10 +48,10 @@ namespace util
 			void SetOffset(TextOffset offset);
 
 			util::TSharedHandle<AnchorPoint> GetHandle();
-		protected:
-			AnchorPoint(TextOffset charOffset=0,bool allowOutOfBounds=false);
-			AnchorPoint(const AnchorPoint&)=delete;
-		private:
+		  protected:
+			AnchorPoint(TextOffset charOffset = 0, bool allowOutOfBounds = false);
+			AnchorPoint(const AnchorPoint &) = delete;
+		  private:
 			TextOffset m_charOffset = 0u;
 			bool m_bAllowOutOfBounds = false;
 			std::weak_ptr<FormattedTextLine> m_wpLine = {};
@@ -63,10 +60,8 @@ namespace util
 			util::TWeakSharedHandle<AnchorPoint> m_handle = {};
 		};
 
-		class LineStartAnchorPoint
-			: public AnchorPoint
-		{
-		public:
+		class LineStartAnchorPoint : public AnchorPoint {
+		  public:
 			void SetPreviousLineAnchorStartPoint(LineStartAnchorPoint &anchor);
 			void ClearPreviousLineAnchorStartPoint();
 			LineStartAnchorPoint *GetPreviousLineAnchorStartPoint();
@@ -80,13 +75,13 @@ namespace util
 
 			std::vector<util::TWeakSharedHandle<AnchorPoint>> &GetChildren();
 			const std::vector<util::TWeakSharedHandle<AnchorPoint>> &GetChildren() const;
-		protected:
+		  protected:
 			void RemoveChild(const AnchorPoint &anchorPoint);
 			std::vector<util::TWeakSharedHandle<AnchorPoint>> m_children = {};
 			using AnchorPoint::AnchorPoint;
 			using AnchorPoint::SetParent;
 			friend AnchorPoint;
-		private:
+		  private:
 			util::TWeakSharedHandle<AnchorPoint> m_prevLineAnchorStartPoint = {};
 			util::TWeakSharedHandle<AnchorPoint> m_nextLineAnchorStartPoint = {};
 		};
@@ -94,10 +89,10 @@ namespace util
 };
 
 template<class TAnchorPoint>
-	util::TSharedHandle<TAnchorPoint> util::text::AnchorPoint::Create(FormattedTextLine &line,bool allowOutOfBounds)
+util::TSharedHandle<TAnchorPoint> util::text::AnchorPoint::Create(FormattedTextLine &line, bool allowOutOfBounds)
 {
-	auto hAnchorPoint = util::TSharedHandle<TAnchorPoint>{new TAnchorPoint{allowOutOfBounds}};
-	hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint,AnchorPoint>(hAnchorPoint);
+	auto hAnchorPoint = util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
+	hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint, AnchorPoint>(hAnchorPoint);
 	hAnchorPoint->SetLine(line);
 	return hAnchorPoint;
 }
