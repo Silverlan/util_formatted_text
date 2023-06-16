@@ -62,7 +62,7 @@ TextLine &TextLine::operator=(const util::Utf8String &line)
 	m_line = line;
 	return *this;
 }
-bool TextLine::operator==(const util::Utf8StringView &line) { return m_line == line; }
+bool TextLine::operator==(const util::Utf8StringView &line) { return Utf8StringView {m_line} == line; }
 TextLine::operator const util::Utf8String &() const { return m_line; }
 TextLine::operator const char *() const { return m_line.c_str(); }
 
