@@ -389,14 +389,16 @@ TextOffset FormattedText::FindFirstVisibleChar(util::text::LineIndex lineIndex, 
 	}
 	return offset;
 }
-
+#include <sharedutils/scope_guard.h>
 void FormattedText::RemoveEmptyTags(util::text::LineIndex lineIndex, bool fromEnd)
 {
 	static auto skip = false;
 	if(skip)
 		return;
 	// Remove all empty tags
+	uint32_t idxTag = 0;
 	for(auto it = m_tags.begin(); it != m_tags.end();) {
+		util::ScopeGuard sg {[&idxTag]() { ++idxTag; }};
 		auto &hTag = *it;
 		if(hTag->IsValid() == false) {
 			if(m_callbacks.onTagRemoved)
@@ -415,11 +417,13 @@ void FormattedText::RemoveEmptyTags(util::text::LineIndex lineIndex, bool fromEn
 			auto result = outerRange.has_value();
 			if(result == true) {
 				assert(outerRange->second >= outerRange->first);
-				if(outerRange->second >= outerRange->first) {
+				if(outerRange->second > 0) {
 					skip = true;
-					result = RemoveText(outerRange->first, outerRange->second - outerRange->first);
+					result = RemoveText(outerRange->first, outerRange->second);
 					skip = false;
 				}
+				else
+					result = false;
 			}
 			if(result)
 				RemoveEmptyTags(lineIndex); // Restart in case m_tags array has been changed
