@@ -36,7 +36,6 @@ namespace util {
 			TextLine &operator=(const util::Utf8String &line);
 			TextLine &operator=(const std::string &line) { return operator=(util::Utf8String {line}); }
 			bool operator==(const util::Utf8StringView &line);
-			bool operator!=(const util::Utf8StringView &line);
 			operator const util::Utf8String &() const;
 			operator const char *() const;
 
