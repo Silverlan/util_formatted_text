@@ -76,7 +76,9 @@ bool FormattedText::operator==(const util::Utf8StringView &text) const
 	for(auto lineIdx = decltype(m_textLines.size()) {0u}; lineIdx < m_textLines.size(); ++lineIdx) {
 		auto &line = m_textLines.at(lineIdx);
 		auto &lineText = line->GetUnformattedLine().GetText();
-		if(offset >= text.length() || !util::utf8_strncmp(text.c_str() + offset, lineText.c_str(), lineText.length()))
+		if(offset >= text.length())
+			return false;
+		if(text.substr(offset) != lineText)
 			return false;
 		offset += line->GetAbsLength();
 		it += line->GetAbsLength();
@@ -178,6 +180,7 @@ void FormattedText::UpdateTextOffsets(LineIndex lineStartIdx)
 	m_unformattedOffsetToLineIndex.resize(unformattedOffset);
 }
 
+#include <iostream>
 void FormattedText::UpdateTextInfo() const
 {
 	if(m_bDirty == false)
@@ -187,16 +190,17 @@ void FormattedText::UpdateTextInfo() const
 	m_textInfo.charCount = 0u;
 	m_textInfo.unformattedText.clear();
 	m_textInfo.formattedText.clear();
+
 	auto &lines = GetLines();
 	for(auto &line : lines) {
 		++m_textInfo.lineCount;
 		m_textInfo.charCount += line->GetAbsLength();
-		m_textInfo.unformattedText += line->GetUnformattedLine().GetText();
-		m_textInfo.formattedText += line->GetFormattedLine().GetText();
-		if(m_textInfo.lineCount != lines.size()) {
+		m_textInfo.unformattedText = line->GetUnformattedLine().GetText();
+		m_textInfo.formattedText = line->GetFormattedLine().GetText();
+		/*if(m_textInfo.lineCount != lines.size()) {
 			m_textInfo.unformattedText += '\n';
 			m_textInfo.formattedText += '\n';
-		}
+		}*/
 	}
 }
 
@@ -633,10 +637,10 @@ LineIndex FormattedText::InsertLine(FormattedTextLine &line, LineIndex lineIdx)
 	OnLineAdded(*m_textLines.at(lineIdx));
 	return lineIdx;
 }
-void FormattedText::AppendText(const util::Utf8StringView &text) { InsertText(text, m_textLines.empty() ? LAST_LINE : (m_textLines.size() - 1), LAST_CHAR); }
-void FormattedText::AppendLine(const util::Utf8StringView &line)
+void FormattedText::AppendText(const util::Utf8StringArg &text) { InsertText(text, m_textLines.empty() ? LAST_LINE : (m_textLines.size() - 1), LAST_CHAR); }
+void FormattedText::AppendLine(const util::Utf8StringArg &line)
 {
-	auto strLine = line.to_str();
+	auto strLine = line->to_str();
 	if(m_textLines.empty() == false)
 		strLine = util::Utf8String {"\n"} + strLine;
 	InsertText(strLine, m_textLines.size());
@@ -649,12 +653,13 @@ void FormattedText::PopBackLine()
 	RemoveLine(m_textLines.size() - 1);
 }
 
-bool FormattedText::InsertText(const util::Utf8StringView &text, LineIndex lineIdx, CharOffset charOffset)
+bool FormattedText::InsertText(const util::Utf8StringArg &text, LineIndex lineIdx, CharOffset charOffset)
 {
-	if(text.empty())
+	if(text->empty())
 		return true;
 	std::vector<PFormattedTextLine> lines {};
-	ParseText(text, lines);
+	ParseText(*text, lines);
+
 	if(lines.empty())
 		return true;
 	while(m_textLines.size() + lines.size() > m_maxLineCount)
@@ -667,6 +672,8 @@ bool FormattedText::InsertText(const util::Utf8StringView &text, LineIndex lineI
 		auto newLine = FormattedTextLine::Create(*this);
 		InsertLine(*newLine, LAST_LINE);
 	}
+
+
 	auto &firstLineToInsert = lines.front();
 
 	auto postfix = m_textLines.at(lineIdx)->Substr(charOffset).to_str();
@@ -679,6 +686,7 @@ bool FormattedText::InsertText(const util::Utf8StringView &text, LineIndex lineI
 
 	auto textToInsert = firstLineToInsert->GetUnformattedLine().GetText();
 	auto insertedCharOffset = targetLineToInsert->InsertString(textToInsert, charOffset);
+
 	if(insertedCharOffset.has_value() == false)
 		return false;
 
@@ -695,12 +703,13 @@ bool FormattedText::InsertText(const util::Utf8StringView &text, LineIndex lineI
 	auto lastInsertedLineIdx = lineIdx + lines.size() - 1;
 	auto &lastInsertedLine = m_textLines.at(lastInsertedLineIdx);
 	auto insertOffset = lastInsertedLine->AppendString(postfix);
-	lastInsertedLine->AttachAnchorPoints(anchorPointsInMoveRange, text.length());
+	lastInsertedLine->AttachAnchorPoints(anchorPointsInMoveRange, text->length());
 	if(postfix.empty() == false)
 		UpdateTextOffsets(lastInsertedLineIdx);
 	ParseTags(lastInsertedLineIdx, insertOffset);
 
 	OnLineChanged(*lastInsertedLine);
+
 	return true;
 }
 

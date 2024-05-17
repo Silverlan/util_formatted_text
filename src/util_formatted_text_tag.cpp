@@ -6,7 +6,7 @@
 #include "util_formatted_text.hpp"
 
 using namespace util::text;
-#pragma optimize("", off)
+
 const decltype(TextTag::TAG_PREFIX) TextTag::TAG_PREFIX = "{[";
 const decltype(TextTag::TAG_POSTFIX) TextTag::TAG_POSTFIX = "]}";
 

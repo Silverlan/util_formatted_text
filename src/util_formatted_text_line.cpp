@@ -285,7 +285,7 @@ util::TSharedHandle<AnchorPoint> FormattedTextLine::CreateAnchorPoint(CharOffset
 
 util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharOffset offset, const util::Utf8StringView &str)
 {
-	if(str.empty() || !util::utf8_strncmp(str.c_str(), TextTag::TAG_PREFIX.data(), TextTag::TAG_PREFIX.length()) || str.length() < (TextTag::TAG_PREFIX.length() + TextTag::TAG_POSTFIX.length()))
+	if(str.empty() || str != TextTag::TAG_PREFIX || str.length() < (TextTag::TAG_PREFIX.length() + TextTag::TAG_POSTFIX.length()))
 		return {};
 	auto isClosingTag = false;
 	enum class Stage : uint8_t { TagName = 0u, Label, Arguments };
@@ -297,7 +297,7 @@ util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharO
 	auto curOffset = startOffset;
 	auto bStringInQuotes = false;
 	while(curOffset < str.length()) {
-		auto token = str.get(curOffset);
+		auto token = str.at(curOffset);
 		auto controlToken = token;
 		if(bStringInQuotes && token != '\0' && token != '\"')
 			controlToken = ' '; // Arbitrary token which must reach 'default' branch

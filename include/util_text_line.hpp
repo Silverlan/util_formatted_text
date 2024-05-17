@@ -7,7 +7,7 @@
 
 #include "util_formatted_text_config.hpp"
 #include "util_formatted_text_types.hpp"
-#include <sharedutils/util_utf8.hpp>
+#include <util_unicode.hpp>
 #include <string>
 #include <string_view>
 #include <sstream>
@@ -37,7 +37,7 @@ namespace util {
 			TextLine &operator=(const std::string &line) { return operator=(util::Utf8String {line}); }
 			bool operator==(const util::Utf8StringView &line);
 			operator const util::Utf8String &() const;
-			operator const char *() const;
+			operator const char16_t *();
 
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 			bool Validate(std::stringstream &msg) const;

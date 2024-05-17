@@ -57,6 +57,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # set(PRECOMPILED_HEADER "stdafx")
 
 link_external_library(sharedutils)
+link_external_library(util_unicode)
 
 set(DEFINITIONS)
 

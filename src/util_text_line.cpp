@@ -16,7 +16,7 @@ bool TextLine::InsertString(const util::Utf8StringView &str, CharOffset charOffs
 		charOffset = m_line.length();
 	if(charOffset > m_line.length())
 		return false;
-	m_line.insert(m_line.begin() + charOffset, str.to_str());
+	m_line.insert(m_line.begin() + charOffset, str);
 	return true;
 }
 
@@ -64,7 +64,7 @@ TextLine &TextLine::operator=(const util::Utf8String &line)
 }
 bool TextLine::operator==(const util::Utf8StringView &line) { return Utf8StringView {m_line} == line; }
 TextLine::operator const util::Utf8String &() const { return m_line; }
-TextLine::operator const char *() const { return m_line.c_str(); }
+TextLine::operator const char16_t *() { return m_line.data(); }
 
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 bool TextLine::Validate(std::stringstream &msg) const

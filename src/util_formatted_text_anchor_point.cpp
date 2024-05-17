@@ -8,7 +8,7 @@
 #include <algorithm>
 
 using namespace util::text;
-#pragma optimize("", off)
+
 AnchorPoint::AnchorPoint(TextOffset charOffset, bool allowOutOfBounds) : m_wpLine {}, m_charOffset {charOffset}, m_bAllowOutOfBounds {allowOutOfBounds} {}
 
 util::TSharedHandle<AnchorPoint> AnchorPoint::GetHandle() { return util::claim_shared_handle_ownership(m_handle); }

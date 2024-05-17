@@ -8,7 +8,7 @@
 #include "util_formatted_text_config.hpp"
 #include "util_text_line.hpp"
 #include <sharedutils/util_shared_handle.hpp>
-#include <sharedutils/util_utf8.hpp>
+#include <util_unicode.hpp>
 #include <optional>
 #include <memory>
 

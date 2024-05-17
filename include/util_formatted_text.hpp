@@ -7,7 +7,7 @@
 
 #include "util_formatted_text_config.hpp"
 #include "util_formatted_text_line.hpp"
-#include <sharedutils/util_utf8.hpp>
+#include <util_unicode.hpp>
 #include <sharedutils/util_shared_handle.hpp>
 #include <vector>
 #include <string_view>
@@ -40,11 +40,11 @@ namespace util {
 				std::function<void()> onTagsCleared = nullptr;
 			};
 
-			static std::shared_ptr<FormattedText> Create(const util::Utf8StringView &text = "");
+			static std::shared_ptr<FormattedText> Create(const util::Utf8StringView &text = {});
 			virtual ~FormattedText() = default;
-			void AppendText(const util::Utf8StringView &text);
-			bool InsertText(const util::Utf8StringView &text, LineIndex lineIdx, CharOffset charOffset = LAST_CHAR);
-			void AppendLine(const util::Utf8StringView &line);
+			void AppendText(const util::Utf8StringArg &text);
+			bool InsertText(const util::Utf8StringArg &text, LineIndex lineIdx, CharOffset charOffset = LAST_CHAR);
+			void AppendLine(const util::Utf8StringArg &line);
 			void PopFrontLine();
 			void PopBackLine();
 			void RemoveLine(LineIndex lineIdx);

@@ -7,7 +7,7 @@
 
 #include "util_formatted_text_anchor_point.hpp"
 #include <sharedutils/util_shared_handle.hpp>
-#include <sharedutils/util_utf8.hpp>
+#include <util_unicode.hpp>
 #include <optional>
 #include <string>
 
