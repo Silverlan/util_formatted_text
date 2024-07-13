@@ -676,7 +676,8 @@ bool FormattedText::InsertText(const util::Utf8StringArg &text, LineIndex lineId
 
 	auto &firstLineToInsert = lines.front();
 
-	auto postfix = m_textLines.at(lineIdx)->Substr(charOffset).to_str();
+	auto subStr = m_textLines.at(lineIdx)->Substr(charOffset);
+	auto postfix = subStr.to_str();
 	auto &targetLineToInsert = m_textLines.at(lineIdx);
 	auto anchorPointsInMoveRange = targetLineToInsert->DetachAnchorPoints(charOffset, UNTIL_THE_END);
 
