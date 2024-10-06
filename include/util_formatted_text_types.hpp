@@ -32,4 +32,8 @@ namespace util {
 	};
 };
 
+namespace pragma::string {
+	class Utf8String;
+};
+
 #endif

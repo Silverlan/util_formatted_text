@@ -8,9 +8,10 @@
 #include "util_formatted_text_config.hpp"
 #include "util_text_line.hpp"
 #include <sharedutils/util_shared_handle.hpp>
-#include <util_unicode.hpp>
 #include <optional>
 #include <memory>
+
+import pragma.string.unicode;
 
 namespace util {
 	namespace text {
@@ -30,10 +31,10 @@ namespace util {
 			const TextLine &GetUnformattedLine() const;
 			TextLine &GetUnformattedLine();
 
-			CharOffset AppendString(const util::Utf8StringView &str);
-			std::optional<CharOffset> InsertString(const util::Utf8StringView &str, CharOffset charOffset);
-			util::Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
-			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, util::Utf8String *outErasedString = nullptr);
+			CharOffset AppendString(const pragma::string::Utf8StringView &str);
+			std::optional<CharOffset> InsertString(const pragma::string::Utf8StringView &str, CharOffset charOffset);
+			pragma::string::Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
+			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, pragma::string::Utf8String *outErasedString = nullptr);
 			bool Move(CharOffset startOffset, TextLength len, FormattedTextLine &moveTarget, CharOffset targetCharOffset = LAST_CHAR);
 
 			std::vector<util::TSharedHandle<TextTagComponent>> &GetTagComponents();
@@ -80,7 +81,7 @@ namespace util {
 			void ShiftAnchors(CharOffset startOffset, TextLength len, ShiftOffset shiftAmount, TextLength oldLineLen);
 			std::vector<TSharedHandle<AnchorPoint>> DetachAnchorPoints(CharOffset startOffset, TextLength len = UNTIL_THE_END);
 			void AttachAnchorPoints(std::vector<TSharedHandle<AnchorPoint>> &anchorPoints, ShiftOffset shiftOffset = 0);
-			util::TSharedHandle<TextTagComponent> ParseTagComponent(CharOffset offset, const util::Utf8StringView &str);
+			util::TSharedHandle<TextTagComponent> ParseTagComponent(CharOffset offset, const pragma::string::Utf8StringView &str);
 			friend FormattedText;
 			friend AnchorPoint;
 		  private:

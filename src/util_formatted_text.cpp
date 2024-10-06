@@ -17,24 +17,24 @@
 
 using namespace util::text;
 #pragma optimize("", off)
-std::shared_ptr<FormattedText> FormattedText::Create(const util::Utf8StringView &text)
+std::shared_ptr<FormattedText> FormattedText::Create(const pragma::string::Utf8StringView &text)
 {
 	auto ftext = std::shared_ptr<FormattedText> {new FormattedText {}};
 	ftext->AppendText(text);
 	return ftext;
 }
 
-void FormattedText::SetText(const util::Utf8StringView &text)
+void FormattedText::SetText(const pragma::string::Utf8StringView &text)
 {
 	Clear();
 	AppendText(text);
 }
-util::Utf8String FormattedText::Substr(TextOffset startOffset, TextLength len) const
+pragma::string::Utf8String FormattedText::Substr(TextOffset startOffset, TextLength len) const
 {
 	auto relOffset = GetRelativeCharOffset(startOffset);
 	if(relOffset.has_value() == false)
 		return "";
-	util::Utf8String result = "";
+	pragma::string::Utf8String result = "";
 	// result.reserve(len +m_textLines.size());
 	auto lineIndex = relOffset->first;
 	auto relCharOffset = relOffset->second;
@@ -69,7 +69,7 @@ void FormattedText::Clear()
 	if(m_callbacks.onTagsCleared)
 		m_callbacks.onTagsCleared();
 }
-bool FormattedText::operator==(const util::Utf8StringView &text) const
+bool FormattedText::operator==(const pragma::string::Utf8StringView &text) const
 {
 	TextOffset offset = 0;
 	auto it = text.begin();
@@ -89,8 +89,8 @@ bool FormattedText::operator==(const util::Utf8StringView &text) const
 	}
 	return text.empty();
 }
-bool FormattedText::operator!=(const util::Utf8StringView &text) const { return operator==(text) == false; }
-FormattedText::operator util::Utf8String() const { return GetUnformattedText(); }
+bool FormattedText::operator!=(const pragma::string::Utf8StringView &text) const { return operator==(text) == false; }
+FormattedText::operator pragma::string::Utf8String() const { return GetUnformattedText(); }
 util::TSharedHandle<AnchorPoint> FormattedText::CreateAnchorPoint(LineIndex lineIdx, CharOffset charOffset, bool allowOutOfBounds)
 {
 	if(lineIdx >= m_textLines.size())
@@ -136,13 +136,13 @@ std::optional<TextOffset> FormattedText::GetUnformattedTextOffset(TextOffset off
 	return {};
 }
 
-const util::Utf8String &FormattedText::GetUnformattedText() const
+const pragma::string::Utf8String &FormattedText::GetUnformattedText() const
 {
 	UpdateTextInfo();
 	return m_textInfo.unformattedText;
 }
 
-const util::Utf8String &FormattedText::GetFormattedText() const
+const pragma::string::Utf8String &FormattedText::GetFormattedText() const
 {
 	UpdateTextInfo();
 	return m_textInfo.formattedText;
@@ -293,7 +293,7 @@ void FormattedText::RemoveLine(LineIndex lineIdx, bool preserveTags)
 
 	// Find tags located in removed line, these will have to be moved into the next
 	// or previous line
-	util::Utf8String strTagComponents {};
+	pragma::string::Utf8String strTagComponents {};
 	if(preserveTags == true && ShouldPreserveTagsOnLineRemoval()) {
 		for(auto &tagComponent : line.GetTagComponents())
 			strTagComponents += tagComponent->GetTagString(*this);
@@ -637,12 +637,12 @@ LineIndex FormattedText::InsertLine(FormattedTextLine &line, LineIndex lineIdx)
 	OnLineAdded(*m_textLines.at(lineIdx));
 	return lineIdx;
 }
-void FormattedText::AppendText(const util::Utf8StringArg &text) { InsertText(text, m_textLines.empty() ? LAST_LINE : (m_textLines.size() - 1), LAST_CHAR); }
-void FormattedText::AppendLine(const util::Utf8StringArg &line)
+void FormattedText::AppendText(const pragma::string::Utf8StringArg &text) { InsertText(text, m_textLines.empty() ? LAST_LINE : (m_textLines.size() - 1), LAST_CHAR); }
+void FormattedText::AppendLine(const pragma::string::Utf8StringArg &line)
 {
 	auto strLine = line->to_str();
 	if(m_textLines.empty() == false)
-		strLine = util::Utf8String {"\n"} + strLine;
+		strLine = pragma::string::Utf8String {"\n"} + strLine;
 	InsertText(strLine, m_textLines.size());
 }
 void FormattedText::PopFrontLine() { RemoveLine(0); }
@@ -653,7 +653,7 @@ void FormattedText::PopBackLine()
 	RemoveLine(m_textLines.size() - 1);
 }
 
-bool FormattedText::InsertText(const util::Utf8StringArg &text, LineIndex lineIdx, CharOffset charOffset)
+bool FormattedText::InsertText(const pragma::string::Utf8StringArg &text, LineIndex lineIdx, CharOffset charOffset)
 {
 	if(text->empty())
 		return true;
@@ -714,7 +714,7 @@ bool FormattedText::InsertText(const util::Utf8StringArg &text, LineIndex lineId
 	return true;
 }
 
-void FormattedText::ParseText(const util::Utf8StringView &text, std::vector<PFormattedTextLine> &outLines)
+void FormattedText::ParseText(const pragma::string::Utf8StringView &text, std::vector<PFormattedTextLine> &outLines)
 {
 	if(text.empty())
 		return;

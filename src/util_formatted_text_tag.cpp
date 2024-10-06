@@ -15,7 +15,7 @@ bool TextTagComponent::operator==(const TextTagComponent &other) const { return 
 bool TextTagComponent::operator!=(const TextTagComponent &other) const { return operator==(other) == false; }
 bool TextTagComponent::operator<(const TextTagComponent &other) const { return IsValid() && *m_endAnchor < *other.m_startAnchor; }
 bool TextTagComponent::operator>(const TextTagComponent &other) const { return IsValid() && *m_startAnchor > *other.m_endAnchor; }
-util::Utf8String TextTagComponent::GetTagString(const FormattedText &text) const
+pragma::string::Utf8String TextTagComponent::GetTagString(const FormattedText &text) const
 {
 	if(m_startAnchor.IsExpired() || m_endAnchor.IsExpired())
 		return {};
@@ -78,27 +78,27 @@ std::optional<std::pair<TextOffset, TextLength>> TextTag::GetOuterRange() const
 	auto len = endOffset - startOffset + 1;
 	return {{startOffset, len}};
 }
-util::Utf8String TextTag::GetTagContents() const
+pragma::string::Utf8String TextTag::GetTagContents() const
 {
 	if(IsValid() == false)
 		return {};
 	auto range = GetInnerRange();
 	return m_wpText.lock()->Substr(range->first, range->second);
 }
-util::Utf8String TextTag::GetTagString() const
+pragma::string::Utf8String TextTag::GetTagString() const
 {
 	if(IsValid() == false)
 		return {};
 	auto range = GetOuterRange();
 	return m_wpText.lock()->Substr(range->first, range->second);
 }
-util::Utf8String TextTag::GetOpeningTag() const
+pragma::string::Utf8String TextTag::GetOpeningTag() const
 {
 	if(m_wpText.expired())
 		return "";
 	return m_openingTag->GetTagString(*m_wpText.lock());
 }
-util::Utf8String TextTag::GetClosingTag() const
+pragma::string::Utf8String TextTag::GetClosingTag() const
 {
 	if(m_wpText.expired())
 		return "";

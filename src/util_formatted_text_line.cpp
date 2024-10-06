@@ -95,14 +95,14 @@ bool FormattedTextLine::IsInRange(TextOffset offset, TextLength len) const
 }
 std::optional<char> FormattedTextLine::GetChar(CharOffset offset) const { return m_unformattedLine.GetChar(offset); }
 
-CharOffset FormattedTextLine::AppendString(const util::Utf8StringView &str)
+CharOffset FormattedTextLine::AppendString(const pragma::string::Utf8StringView &str)
 {
 	auto charOffset = GetLength();
 	auto success = InsertString(str, charOffset);
 	assert(success);
 	return charOffset;
 }
-std::optional<CharOffset> FormattedTextLine::InsertString(const util::Utf8StringView &str, CharOffset charOffset)
+std::optional<CharOffset> FormattedTextLine::InsertString(const pragma::string::Utf8StringView &str, CharOffset charOffset)
 {
 	if(charOffset == LAST_CHAR)
 		charOffset = GetLength();
@@ -116,7 +116,7 @@ std::optional<CharOffset> FormattedTextLine::InsertString(const util::Utf8String
 	return charOffset;
 }
 
-util::Utf8StringView FormattedTextLine::Substr(CharOffset offset, TextLength len) const { return m_unformattedLine.Substr(offset, len); }
+pragma::string::Utf8StringView FormattedTextLine::Substr(CharOffset offset, TextLength len) const { return m_unformattedLine.Substr(offset, len); }
 
 void FormattedTextLine::ShiftAnchors(CharOffset startOffset, TextLength len, ShiftOffset shiftAmount, TextLength oldLineLen)
 {
@@ -148,7 +148,7 @@ void FormattedTextLine::ShiftAnchors(CharOffset startOffset, TextLength len, Shi
 		nextLineAnchorPoint->ShiftByOffset(shiftAmount);
 }
 
-std::optional<TextLength> FormattedTextLine::Erase(CharOffset startOffset, TextLength len, util::Utf8String *outErasedString)
+std::optional<TextLength> FormattedTextLine::Erase(CharOffset startOffset, TextLength len, pragma::string::Utf8String *outErasedString)
 {
 	auto lenLine = GetAbsLength();
 	auto numErased = m_unformattedLine.Erase(startOffset, len, outErasedString);
@@ -192,7 +192,7 @@ bool FormattedTextLine::Move(CharOffset startOffset, TextLength len, FormattedTe
 	// Temporarily remove all anchor points within the move range from this line
 	auto anchorPointsInMoveRange = DetachAnchorPoints(startOffset, len);
 
-	util::Utf8String erasedString;
+	pragma::string::Utf8String erasedString;
 	if(Erase(startOffset, len, &erasedString) == false || moveTarget.InsertString(erasedString, targetCharOffset) == false)
 		return false;
 	// Add the removed anchor points to the target line and update their offsets accordingly
@@ -225,7 +225,7 @@ TextLine &FormattedTextLine::Format()
 	m_unformattedCharIndexToFormatted.resize(m_unformattedLine.GetAbsLength());
 	m_formattedCharIndexToUnformatted.reserve(m_unformattedLine.GetAbsLength());
 	auto lineStartOffset = GetStartOffset();
-	auto lineView = util::Utf8StringView {m_unformattedLine.GetText()};
+	auto lineView = pragma::string::Utf8StringView {m_unformattedLine.GetText()};
 
 	auto curTagIdx = 0u;
 	TextOffset offset = 0u;
@@ -283,7 +283,7 @@ util::TSharedHandle<AnchorPoint> FormattedTextLine::CreateAnchorPoint(CharOffset
 	return anchorPoint;
 }
 
-util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharOffset offset, const util::Utf8StringView &str)
+util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharOffset offset, const pragma::string::Utf8StringView &str)
 {
 	if(str.empty() || str.length() < (TextTag::TAG_PREFIX.length() + TextTag::TAG_POSTFIX.length()) || str.substr(0, TextTag::TAG_PREFIX.length()) != TextTag::TAG_PREFIX)
 		return {};

@@ -7,9 +7,10 @@
 
 #include "util_formatted_text_anchor_point.hpp"
 #include <sharedutils/util_shared_handle.hpp>
-#include <util_unicode.hpp>
 #include <optional>
 #include <string>
+
+import pragma.string.unicode;
 
 namespace util {
 	namespace text {
@@ -27,7 +28,7 @@ namespace util {
 			bool operator<=(const TextTagComponent &) const = delete;
 			bool operator>=(const TextTagComponent &) const = delete;
 
-			util::Utf8String GetTagString(const FormattedText &text) const;
+			pragma::string::Utf8String GetTagString(const FormattedText &text) const;
 			const AnchorPoint *GetStartAnchorPoint() const;
 			AnchorPoint *GetStartAnchorPoint();
 			const AnchorPoint *GetEndAnchorPoint() const;
@@ -68,10 +69,10 @@ namespace util {
 			bool IsClosed() const;
 			std::optional<std::pair<TextOffset, TextLength>> GetInnerRange() const;
 			std::optional<std::pair<TextOffset, TextLength>> GetOuterRange() const;
-			util::Utf8String GetTagContents() const;
-			util::Utf8String GetTagString() const;
-			util::Utf8String GetOpeningTag() const;
-			util::Utf8String GetClosingTag() const;
+			pragma::string::Utf8String GetTagContents() const;
+			pragma::string::Utf8String GetTagString() const;
+			pragma::string::Utf8String GetOpeningTag() const;
+			pragma::string::Utf8String GetClosingTag() const;
 			void SetClosingTagComponent(const util::TSharedHandle<TextTagComponent> &closingTag);
 			const TextOpeningTagComponent *GetOpeningTagComponent() const;
 			TextOpeningTagComponent *GetOpeningTagComponent();

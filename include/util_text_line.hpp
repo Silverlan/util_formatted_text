@@ -7,13 +7,14 @@
 
 #include "util_formatted_text_config.hpp"
 #include "util_formatted_text_types.hpp"
-#include <util_unicode.hpp>
 #include <string>
 #include <string_view>
 #include <sstream>
 #include <memory>
 #include <vector>
 #include <optional>
+
+import pragma.string.unicode;
 
 namespace util {
 	namespace text {
@@ -27,31 +28,31 @@ namespace util {
 			TextLength GetLength() const;
 			// Returns length including new-line character
 			TextLength GetAbsLength() const;
-			const util::Utf8String &GetText() const;
+			const pragma::string::Utf8String &GetText() const;
 			int32_t At(CharOffset offset) const;
 			std::optional<int32_t> GetChar(CharOffset offset) const;
 			void Reserve(TextLength len);
-			util::Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
+			pragma::string::Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
 
-			TextLine &operator=(const util::Utf8String &line);
-			TextLine &operator=(const std::string &line) { return operator=(util::Utf8String {line}); }
-			bool operator==(const util::Utf8StringView &line);
-			operator const util::Utf8String &() const;
+			TextLine &operator=(const pragma::string::Utf8String &line);
+			TextLine &operator=(const std::string &line) { return operator=(pragma::string::Utf8String {line}); }
+			bool operator==(const pragma::string::Utf8StringView &line);
+			operator const pragma::string::Utf8String &() const;
 			operator const char16_t *();
 
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 			bool Validate(std::stringstream &msg) const;
 #endif
 		  protected:
-			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, util::Utf8String *outErasedString = nullptr);
+			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, pragma::string::Utf8String *outErasedString = nullptr);
 			bool CanErase(CharOffset startOffset, TextLength len = UNTIL_THE_END) const;
 			void Clear();
 			void AppendCharacter(int32_t c);
-			bool InsertString(const util::Utf8StringView &str, CharOffset charOffset);
+			bool InsertString(const pragma::string::Utf8StringView &str, CharOffset charOffset);
 			friend FormattedTextLine;
 			friend FormattedText;
 		  private:
-			util::Utf8String m_line = "";
+			pragma::string::Utf8String m_line = "";
 			std::vector<CharFlags> m_charFlags = {};
 		};
 		using PTextLine = std::shared_ptr<TextLine>;
