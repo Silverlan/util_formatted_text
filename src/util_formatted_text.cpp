@@ -72,22 +72,24 @@ void FormattedText::Clear()
 bool FormattedText::operator==(const pragma::string::Utf8StringView &text) const
 {
 	TextOffset offset = 0;
+	TextLength len = 0;
 	auto it = text.begin();
 	for(auto lineIdx = decltype(m_textLines.size()) {0u}; lineIdx < m_textLines.size(); ++lineIdx) {
 		auto &line = m_textLines.at(lineIdx);
 		auto &lineText = line->GetUnformattedLine().GetText();
 		if(offset >= text.length())
 			return false;
-		if(text.substr(offset) != lineText)
+		if(text.substr(offset, lineText.length()) != lineText)
 			return false;
 		offset += line->GetAbsLength();
+		len += line->GetLength();
 		it += line->GetAbsLength();
 		if(lineIdx == m_textLines.size() - 1) {
-			if((offset - 1) != text.length())
+			if(len != text.length())
 				return false;
 		}
 	}
-	return text.empty();
+	return len == text.length();
 }
 bool FormattedText::operator!=(const pragma::string::Utf8StringView &text) const { return operator==(text) == false; }
 FormattedText::operator pragma::string::Utf8String() const { return GetUnformattedText(); }
@@ -672,7 +674,6 @@ bool FormattedText::InsertText(const pragma::string::Utf8StringArg &text, LineIn
 		auto newLine = FormattedTextLine::Create(*this);
 		InsertLine(*newLine, LAST_LINE);
 	}
-
 
 	auto &firstLineToInsert = lines.front();
 
