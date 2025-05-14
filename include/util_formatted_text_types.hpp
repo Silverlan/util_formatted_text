@@ -9,6 +9,14 @@
 #include <limits>
 #include <memory>
 
+#ifdef _MSVC_VER
+namespace pragma::string {
+	class Utf8String;
+};
+#else
+import pragma.string.unicode;
+#endif
+
 namespace util {
 	namespace text {
 		using TextLength = size_t;
@@ -30,10 +38,6 @@ namespace util {
 		class FormattedTextLine;
 		using PFormattedTextLine = std::shared_ptr<FormattedTextLine>;
 	};
-};
-
-namespace pragma::string {
-	class Utf8String;
 };
 
 #endif
