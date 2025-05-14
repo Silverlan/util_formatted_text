@@ -9,7 +9,7 @@
 #include <limits>
 #include <memory>
 
-#ifdef _MSVC_VER
+#ifdef _MSC_VER
 namespace pragma::string {
 	class Utf8String;
 };
