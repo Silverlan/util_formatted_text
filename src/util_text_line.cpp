@@ -31,9 +31,7 @@ std::optional<int32_t> TextLine::GetChar(CharOffset offset) const
 }
 
 void TextLine::Clear() { m_line.clear(); }
-void TextLine::Reserve(TextLength len)
-{ /*m_line.reserve(len);*/
-}
+void TextLine::Reserve(TextLength len) { /*m_line.reserve(len);*/ }
 pragma::string::Utf8StringView TextLine::Substr(CharOffset offset, TextLength len) const
 {
 	if(offset >= m_line.length())
