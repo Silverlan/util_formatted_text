@@ -138,4 +138,3 @@ void LineStartAnchorPoint::SetPreviousLineAnchorStartPoint(LineStartAnchorPoint 
 	anchor.SetNextLineAnchorStartPoint(*this);
 }
 LineStartAnchorPoint *LineStartAnchorPoint::GetPreviousLineAnchorStartPoint() { return static_cast<LineStartAnchorPoint *>(m_prevLineAnchorStartPoint.Get()); }
-#pragma optimize("", on)

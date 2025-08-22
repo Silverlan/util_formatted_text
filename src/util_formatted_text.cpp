@@ -15,7 +15,7 @@
 #endif
 
 using namespace util::text;
-#pragma optimize("", off)
+
 std::shared_ptr<FormattedText> FormattedText::Create(const pragma::string::Utf8StringView &text)
 {
 	auto ftext = std::shared_ptr<FormattedText> {new FormattedText {}};
@@ -1467,4 +1467,3 @@ bool FormattedText::Validate(std::stringstream &msg) const
 	return true;
 }
 #endif
-#pragma optimize("", on)

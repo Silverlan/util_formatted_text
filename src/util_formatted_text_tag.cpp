@@ -108,4 +108,3 @@ const TextOpeningTagComponent *TextTag::GetOpeningTagComponent() const { return 
 TextOpeningTagComponent *TextTag::GetOpeningTagComponent() { return static_cast<TextOpeningTagComponent *>(m_openingTag.Get()); }
 const TextTagComponent *TextTag::GetClosingTagComponent() const { return const_cast<TextTag *>(this)->GetClosingTagComponent(); }
 TextTagComponent *TextTag::GetClosingTagComponent() { return m_closingTag.Get(); }
-#pragma optimize("", on)
