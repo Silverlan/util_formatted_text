@@ -7,14 +7,7 @@
 #include <cinttypes>
 #include <limits>
 #include <memory>
-
-#ifdef _MSC_VER
-namespace pragma::string {
-	class Utf8String;
-};
-#else
 import pragma.string.unicode;
-#endif
 
 namespace util {
 	namespace text {
