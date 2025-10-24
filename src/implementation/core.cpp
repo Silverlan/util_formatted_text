@@ -1,18 +1,22 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#include "util_formatted_text.hpp"
-#include "util_formatted_text_anchor_point.hpp"
-#include "util_formatted_text_tag.hpp"
+module;
+
 #include <sstream>
 #include <cstring>
 #include <cassert>
 #include <algorithm>
+#include <iostream>
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 #include <functional>
 #include <iostream>
 #include <unordered_set>
 #endif
+
+module pragma.string.formatted_text;
+
+import :core;
 
 using namespace util::text;
 
@@ -394,7 +398,7 @@ TextOffset FormattedText::FindFirstVisibleChar(util::text::LineIndex lineIndex, 
 	}
 	return offset;
 }
-#include <sharedutils/scope_guard.h>
+
 void FormattedText::RemoveEmptyTags(util::text::LineIndex lineIndex, bool fromEnd)
 {
 	static auto skip = false;

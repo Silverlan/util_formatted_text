@@ -1,8 +1,14 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#include "util_formatted_text_tag.hpp"
-#include "util_formatted_text.hpp"
+module;
+
+#include <string>
+#include <vector>
+
+module pragma.string.formatted_text;
+
+import :tag;
 
 using namespace util::text;
 

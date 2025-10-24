@@ -1,11 +1,8 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#ifndef __UTIL_TEXT_LINE_HPP__
-#define __UTIL_TEXT_LINE_HPP__
+module;
 
-#include "util_formatted_text_config.hpp"
-#include "util_formatted_text_types.hpp"
 #include <string>
 #include <string_view>
 #include <sstream>
@@ -13,9 +10,12 @@
 #include <vector>
 #include <optional>
 
-import pragma.string.unicode;
+export module pragma.string.formatted_text:text_line;
 
-namespace util {
+export import pragma.string.unicode;
+export import :types;
+
+export namespace util {
 	namespace text {
 		class FormattedText;
 		class FormattedTextLine;
@@ -57,5 +57,3 @@ namespace util {
 		using PTextLine = std::shared_ptr<TextLine>;
 	};
 };
-
-#endif

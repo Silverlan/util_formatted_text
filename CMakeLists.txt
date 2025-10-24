@@ -6,8 +6,8 @@ pr_add_library(${PROJ_NAME} STATIC)
 pr_add_dependency(${PROJ_NAME} sharedutils TARGET PUBLIC)
 pr_add_dependency(${PROJ_NAME} util_unicode TARGET PUBLIC)
 
+pr_init_module(${PROJ_NAME})
 pr_add_headers(${PROJ_NAME} "include/")
-pr_add_sources(${PROJ_NAME} "src/")
 
 if(UNIX)
     target_link_libraries(${PROJ_NAME} PRIVATE dl)
