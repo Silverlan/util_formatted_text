@@ -7,6 +7,7 @@ module;
 #include <string_view>
 #include <functional>
 #include <memory>
+#include <optional>
 
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 #include <sstream>

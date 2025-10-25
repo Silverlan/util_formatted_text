@@ -5,6 +5,8 @@ module;
 
 #include <string>
 #include <vector>
+#include <typeinfo>
+#include <optional>
 
 module pragma.string.formatted_text;
 

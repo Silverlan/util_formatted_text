@@ -9,6 +9,7 @@ module;
 #include <algorithm>
 #include <stdexcept>
 #include <optional>
+#include <cinttypes>
 
 module pragma.string.formatted_text;
 

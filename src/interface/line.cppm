@@ -6,6 +6,7 @@ module;
 #include <optional>
 #include <memory>
 #include <string>
+#include <vector>
 
 export module pragma.string.formatted_text:line;
 

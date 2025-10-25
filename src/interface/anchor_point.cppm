@@ -18,7 +18,13 @@ export namespace util {
 		class AnchorPoint {
 		  public:
 			template<class TAnchorPoint = AnchorPoint>
-			static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line, bool allowOutOfBounds = false);
+			static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line, bool allowOutOfBounds = false)
+			{
+				auto hAnchorPoint = util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
+				hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint, AnchorPoint>(hAnchorPoint);
+				hAnchorPoint->SetLine(line);
+				return hAnchorPoint;
+			}
 			virtual ~AnchorPoint() = default;
 			LineIndex GetLineIndex() const;
 			TextOffset GetTextCharOffset() const;
@@ -88,14 +94,3 @@ export namespace util {
 		};
 	};
 };
-
-export {
-	template<class TAnchorPoint>
-	util::TSharedHandle<TAnchorPoint> util::text::AnchorPoint::Create(FormattedTextLine &line, bool allowOutOfBounds)
-	{
-		auto hAnchorPoint = util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
-		hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint, AnchorPoint>(hAnchorPoint);
-		hAnchorPoint->SetLine(line);
-		return hAnchorPoint;
-	}
-}

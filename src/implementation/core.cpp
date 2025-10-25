@@ -8,6 +8,9 @@ module;
 #include <cassert>
 #include <algorithm>
 #include <iostream>
+#include <vector>
+#include <memory>
+#include <cinttypes>
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 #include <functional>
 #include <iostream>
