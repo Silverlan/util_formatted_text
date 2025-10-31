@@ -3,13 +3,7 @@
 
 module;
 
-#include <assert.h>
-#include <vector>
-#include <cstring>
-#include <algorithm>
-#include <stdexcept>
-#include <optional>
-#include <cinttypes>
+#include <cassert>
 
 module pragma.string.formatted_text;
 

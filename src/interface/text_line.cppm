@@ -3,12 +3,6 @@
 
 module;
 
-#include <string>
-#include <string_view>
-#include <sstream>
-#include <memory>
-#include <vector>
-#include <optional>
 
 export module pragma.string.formatted_text:text_line;
 

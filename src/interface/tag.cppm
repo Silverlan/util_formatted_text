@@ -3,10 +3,6 @@
 
 module;
 
-#include <optional>
-#include <string>
-#include <memory>
-#include <vector>
 
 export module pragma.string.formatted_text:tag;
 

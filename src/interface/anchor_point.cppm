@@ -3,8 +3,6 @@
 
 module;
 
-#include <memory>
-#include <vector>
 
 export module pragma.string.formatted_text:anchor_point;
 

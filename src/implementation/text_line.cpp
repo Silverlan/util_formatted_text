@@ -3,9 +3,6 @@
 
 module;
 
-#include <algorithm>
-#include <string>
-#include <optional>
 
 module pragma.string.formatted_text;
 

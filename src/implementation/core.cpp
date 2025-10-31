@@ -3,18 +3,8 @@
 
 module;
 
-#include <sstream>
-#include <cstring>
 #include <cassert>
-#include <algorithm>
-#include <iostream>
-#include <vector>
-#include <memory>
-#include <cinttypes>
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
-#include <functional>
-#include <iostream>
-#include <unordered_set>
 #endif
 
 module pragma.string.formatted_text;
@@ -188,7 +178,6 @@ void FormattedText::UpdateTextOffsets(LineIndex lineStartIdx)
 	m_unformattedOffsetToLineIndex.resize(unformattedOffset);
 }
 
-#include <iostream>
 void FormattedText::UpdateTextInfo() const
 {
 	if(m_bDirty == false)

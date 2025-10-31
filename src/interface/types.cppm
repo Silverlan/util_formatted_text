@@ -3,13 +3,11 @@
 
 module;
 
-#include <cinttypes>
-#include <limits>
-#include <memory>
 
 export module pragma.string.formatted_text:types;
 
 export import pragma.string.unicode;
+export import std.compat;
 
 export namespace util {
 	namespace text {
