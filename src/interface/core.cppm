@@ -3,7 +3,6 @@
 
 module;
 
-
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
 #endif
 

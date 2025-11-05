@@ -3,7 +3,6 @@
 
 module;
 
-
 export module pragma.string.formatted_text:line;
 
 export import :text_line;

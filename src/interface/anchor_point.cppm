@@ -3,7 +3,6 @@
 
 module;
 
-
 export module pragma.string.formatted_text:anchor_point;
 
 export import :types;

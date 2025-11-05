@@ -3,7 +3,6 @@
 
 module;
 
-
 module pragma.string.formatted_text;
 
 import :tag;

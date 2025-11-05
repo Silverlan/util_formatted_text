@@ -3,7 +3,6 @@
 
 module;
 
-
 export module pragma.string.formatted_text:types;
 
 export import pragma.string.unicode;
