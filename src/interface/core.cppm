@@ -1,23 +1,18 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#ifndef __UTIL_FORMATTED_TEXT_HPP__
-#define __UTIL_FORMATTED_TEXT_HPP__
-
-#include "util_formatted_text_config.hpp"
-#include "util_formatted_text_line.hpp"
-#include <sharedutils/util_shared_handle.hpp>
-#include <vector>
-#include <string_view>
-#include <functional>
+module;
 
 #ifdef ENABLE_FORMATTED_TEXT_UNIT_TESTS
-#include <sstream>
 #endif
 
-import pragma.string.unicode;
+export module pragma.string.formatted_text:core;
 
-namespace util {
+export import :text_line;
+export import pragma.string.unicode;
+export import pragma.util;
+
+export namespace util {
 	namespace text {
 		class AnchorPoint;
 		class TextTag;
@@ -125,5 +120,3 @@ namespace util {
 		};
 	};
 };
-
-#endif

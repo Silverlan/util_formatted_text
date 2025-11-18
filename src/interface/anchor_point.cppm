@@ -1,22 +1,27 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#ifndef __UTIL_FORMATTED_TEXT_ANCHOR_POINT_HPP__
-#define __UTIL_FORMATTED_TEXT_ANCHOR_POINT_HPP__
+module;
 
-#include "util_formatted_text_types.hpp"
-#include <sharedutils/util_shared_handle.hpp>
-#include <memory>
-#include <vector>
+export module pragma.string.formatted_text:anchor_point;
 
-namespace util {
+export import :types;
+export import pragma.util;
+
+export namespace util {
 	namespace text {
 		class FormattedTextLine;
 		class LineStartAnchorPoint;
 		class AnchorPoint {
 		  public:
 			template<class TAnchorPoint = AnchorPoint>
-			static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line, bool allowOutOfBounds = false);
+			static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line, bool allowOutOfBounds = false)
+			{
+				auto hAnchorPoint = util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
+				hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint, AnchorPoint>(hAnchorPoint);
+				hAnchorPoint->SetLine(line);
+				return hAnchorPoint;
+			}
 			virtual ~AnchorPoint() = default;
 			LineIndex GetLineIndex() const;
 			TextOffset GetTextCharOffset() const;
@@ -86,14 +91,3 @@ namespace util {
 		};
 	};
 };
-
-template<class TAnchorPoint>
-util::TSharedHandle<TAnchorPoint> util::text::AnchorPoint::Create(FormattedTextLine &line, bool allowOutOfBounds)
-{
-	auto hAnchorPoint = util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
-	hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint, AnchorPoint>(hAnchorPoint);
-	hAnchorPoint->SetLine(line);
-	return hAnchorPoint;
-}
-
-#endif

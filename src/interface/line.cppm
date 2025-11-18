@@ -1,18 +1,15 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#ifndef __UTIL_FORMATTED_TEXT_LINE_HPP__
-#define __UTIL_FORMATTED_TEXT_LINE_HPP__
+module;
 
-#include "util_formatted_text_config.hpp"
-#include "util_text_line.hpp"
-#include <sharedutils/util_shared_handle.hpp>
-#include <optional>
-#include <memory>
+export module pragma.string.formatted_text:line;
 
-import pragma.string.unicode;
+export import :text_line;
+export import pragma.string.unicode;
+export import pragma.util;
 
-namespace util {
+export namespace util {
 	namespace text {
 		class FormattedText;
 		class TextTagComponent;
@@ -99,5 +96,3 @@ namespace util {
 		};
 	};
 };
-
-#endif

@@ -1,17 +1,15 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#ifndef __UTIL_FORMATTED_TEXT_TAG_HPP__
-#define __UTIL_FORMATTED_TEXT_TAG_HPP__
+module;
 
-#include "util_formatted_text_anchor_point.hpp"
-#include <sharedutils/util_shared_handle.hpp>
-#include <optional>
-#include <string>
+export module pragma.string.formatted_text:tag;
 
-import pragma.string.unicode;
+export import :anchor_point;
+export import pragma.string.unicode;
+export import pragma.util;
 
-namespace util {
+export namespace util {
 	namespace text {
 		class FormattedText;
 		class TextTagComponent {
@@ -86,5 +84,3 @@ namespace util {
 		using PTextTag = std::shared_ptr<TextTag>;
 	};
 };
-
-#endif

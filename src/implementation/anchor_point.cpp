@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: (c) 2019 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#include "util_formatted_text_anchor_point.hpp"
-#include "util_formatted_text_line.hpp"
-#include "util_formatted_text.hpp"
-#include <algorithm>
+module;
+
+module pragma.string.formatted_text;
+
+import :anchor_point;
 
 using namespace util::text;
 
