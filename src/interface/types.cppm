@@ -8,8 +8,8 @@ export module pragma.string.formatted_text:types;
 export import pragma.string.unicode;
 export import std.compat;
 
-export namespace util {
-	namespace text {
+export namespace pragma {
+	namespace string {
 		using TextLength = size_t;
 		using TextOffset = size_t;
 

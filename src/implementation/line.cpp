@@ -9,7 +9,7 @@ module pragma.string.formatted_text;
 
 import :line;
 
-using namespace util::text;
+using namespace pragma::string;
 
 PFormattedTextLine FormattedTextLine::Create(FormattedText &text, const std::string &line) { return PFormattedTextLine {new FormattedTextLine {text, line}}; }
 FormattedTextLine::~FormattedTextLine()
@@ -44,7 +44,7 @@ void FormattedTextLine::DetachAnchorPoint(const AnchorPoint &anchorPoint)
 void FormattedTextLine::AttachAnchorPoint(AnchorPoint &anchorPoint)
 {
 	auto it = std::find_if(m_anchorPoints.begin(), m_anchorPoints.end(), [&anchorPoint](const util::TWeakSharedHandle<AnchorPoint> &hAnchorPoint) { return hAnchorPoint.Get() == &anchorPoint; });
-	m_anchorPoints.push_back(util::TWeakSharedHandle<util::text::AnchorPoint> {anchorPoint.GetHandle()});
+	m_anchorPoints.push_back(pragma::util::TWeakSharedHandle<AnchorPoint> {anchorPoint.GetHandle()});
 }
 
 const TextLine &FormattedTextLine::GetFormattedLine() const { return const_cast<FormattedTextLine *>(this)->GetFormattedLine(); }
@@ -57,10 +57,10 @@ TextLine &FormattedTextLine::GetFormattedLine()
 const TextLine &FormattedTextLine::GetUnformattedLine() const { return const_cast<FormattedTextLine *>(this)->GetUnformattedLine(); }
 TextLine &FormattedTextLine::GetUnformattedLine() { return m_unformattedLine; }
 
-const std::vector<util::TSharedHandle<TextTagComponent>> &FormattedTextLine::GetTagComponents() const { return const_cast<FormattedTextLine *>(this)->GetTagComponents(); }
-std::vector<util::TSharedHandle<TextTagComponent>> &FormattedTextLine::GetTagComponents() { return m_tagComponents; }
-const std::vector<util::TWeakSharedHandle<AnchorPoint>> &FormattedTextLine::GetAnchorPoints() const { return const_cast<FormattedTextLine *>(this)->GetAnchorPoints(); }
-std::vector<util::TWeakSharedHandle<AnchorPoint>> &FormattedTextLine::GetAnchorPoints() { return m_anchorPoints; }
+const std::vector<pragma::util::TSharedHandle<TextTagComponent>> &FormattedTextLine::GetTagComponents() const { return const_cast<FormattedTextLine *>(this)->GetTagComponents(); }
+std::vector<pragma::util::TSharedHandle<TextTagComponent>> &FormattedTextLine::GetTagComponents() { return m_tagComponents; }
+const std::vector<pragma::util::TWeakSharedHandle<AnchorPoint>> &FormattedTextLine::GetAnchorPoints() const { return const_cast<FormattedTextLine *>(this)->GetAnchorPoints(); }
+std::vector<pragma::util::TWeakSharedHandle<AnchorPoint>> &FormattedTextLine::GetAnchorPoints() { return m_anchorPoints; }
 const LineStartAnchorPoint &FormattedTextLine::GetStartAnchorPoint() const { return const_cast<FormattedTextLine *>(this)->GetStartAnchorPoint(); }
 LineStartAnchorPoint &FormattedTextLine::GetStartAnchorPoint() { return static_cast<LineStartAnchorPoint &>(*m_startAnchorPoint); }
 
@@ -94,14 +94,14 @@ bool FormattedTextLine::IsInRange(TextOffset offset, TextLength len) const
 }
 std::optional<char> FormattedTextLine::GetChar(CharOffset offset) const { return m_unformattedLine.GetChar(offset); }
 
-CharOffset FormattedTextLine::AppendString(const pragma::string::Utf8StringView &str)
+CharOffset FormattedTextLine::AppendString(const Utf8StringView &str)
 {
 	auto charOffset = GetLength();
 	auto success = InsertString(str, charOffset);
 	assert(success);
 	return charOffset;
 }
-std::optional<CharOffset> FormattedTextLine::InsertString(const pragma::string::Utf8StringView &str, CharOffset charOffset)
+std::optional<CharOffset> FormattedTextLine::InsertString(const Utf8StringView &str, CharOffset charOffset)
 {
 	if(charOffset == LAST_CHAR)
 		charOffset = GetLength();
@@ -115,7 +115,7 @@ std::optional<CharOffset> FormattedTextLine::InsertString(const pragma::string::
 	return charOffset;
 }
 
-pragma::string::Utf8StringView FormattedTextLine::Substr(CharOffset offset, TextLength len) const { return m_unformattedLine.Substr(offset, len); }
+Utf8StringView FormattedTextLine::Substr(CharOffset offset, TextLength len) const { return m_unformattedLine.Substr(offset, len); }
 
 void FormattedTextLine::ShiftAnchors(CharOffset startOffset, TextLength len, ShiftOffset shiftAmount, TextLength oldLineLen)
 {
@@ -147,7 +147,7 @@ void FormattedTextLine::ShiftAnchors(CharOffset startOffset, TextLength len, Shi
 		nextLineAnchorPoint->ShiftByOffset(shiftAmount);
 }
 
-std::optional<TextLength> FormattedTextLine::Erase(CharOffset startOffset, TextLength len, pragma::string::Utf8String *outErasedString)
+std::optional<TextLength> FormattedTextLine::Erase(CharOffset startOffset, TextLength len, Utf8String *outErasedString)
 {
 	auto lenLine = GetAbsLength();
 	auto numErased = m_unformattedLine.Erase(startOffset, len, outErasedString);
@@ -161,11 +161,11 @@ std::optional<TextLength> FormattedTextLine::Erase(CharOffset startOffset, TextL
 	return len;
 }
 
-std::vector<util::TSharedHandle<util::text::AnchorPoint>> FormattedTextLine::DetachAnchorPoints(CharOffset startOffset, TextLength len)
+std::vector<pragma::util::TSharedHandle<AnchorPoint>> FormattedTextLine::DetachAnchorPoints(CharOffset startOffset, TextLength len)
 {
 	if(len == UNTIL_THE_END)
 		len = GetAbsLength() - startOffset;
-	std::vector<TSharedHandle<util::text::AnchorPoint>> anchorPointsInRange {};
+	std::vector<util::TSharedHandle<AnchorPoint>> anchorPointsInRange {};
 	startOffset += GetStartOffset();
 	for(auto &hChild : GetStartAnchorPoint().GetChildren()) {
 		if(hChild.IsValid() == false || hChild->IsValid() == false || hChild->IsInRange(startOffset, len) == false)
@@ -177,7 +177,7 @@ std::vector<util::TSharedHandle<util::text::AnchorPoint>> FormattedTextLine::Det
 	return anchorPointsInRange;
 }
 
-void FormattedTextLine::AttachAnchorPoints(std::vector<util::TSharedHandle<util::text::AnchorPoint>> &anchorPoints, ShiftOffset shiftOffset)
+void FormattedTextLine::AttachAnchorPoints(std::vector<util::TSharedHandle<AnchorPoint>> &anchorPoints, ShiftOffset shiftOffset)
 {
 	for(auto &pAnchorPoint : anchorPoints) {
 		pAnchorPoint->SetParent(GetStartAnchorPoint());
@@ -191,7 +191,7 @@ bool FormattedTextLine::Move(CharOffset startOffset, TextLength len, FormattedTe
 	// Temporarily remove all anchor points within the move range from this line
 	auto anchorPointsInMoveRange = DetachAnchorPoints(startOffset, len);
 
-	pragma::string::Utf8String erasedString;
+	Utf8String erasedString;
 	if(Erase(startOffset, len, &erasedString) == false || moveTarget.InsertString(erasedString, targetCharOffset) == false)
 		return false;
 	// Add the removed anchor points to the target line and update their offsets accordingly
@@ -224,7 +224,7 @@ TextLine &FormattedTextLine::Format()
 	m_unformattedCharIndexToFormatted.resize(m_unformattedLine.GetAbsLength());
 	m_formattedCharIndexToUnformatted.reserve(m_unformattedLine.GetAbsLength());
 	auto lineStartOffset = GetStartOffset();
-	auto lineView = pragma::string::Utf8StringView {m_unformattedLine.GetText()};
+	auto lineView = Utf8StringView {m_unformattedLine.GetText()};
 
 	auto curTagIdx = 0u;
 	TextOffset offset = 0u;
@@ -272,7 +272,7 @@ CharOffset FormattedTextLine::GetUnformattedCharOffset(CharOffset offset) const
 	return m_formattedCharIndexToUnformatted.at(offset);
 }
 
-util::TSharedHandle<AnchorPoint> FormattedTextLine::CreateAnchorPoint(CharOffset charOffset, bool allowOutOfBounds)
+pragma::util::TSharedHandle<AnchorPoint> FormattedTextLine::CreateAnchorPoint(CharOffset charOffset, bool allowOutOfBounds)
 {
 	if(allowOutOfBounds == false && charOffset > GetLength())
 		return {};
@@ -282,7 +282,7 @@ util::TSharedHandle<AnchorPoint> FormattedTextLine::CreateAnchorPoint(CharOffset
 	return anchorPoint;
 }
 
-util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharOffset offset, const pragma::string::Utf8StringView &str)
+pragma::util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharOffset offset, const Utf8StringView &str)
 {
 	if(str.empty() || str.length() < (TextTag::TAG_PREFIX.length() + TextTag::TAG_POSTFIX.length()) || str.substr(0, TextTag::TAG_PREFIX.length()) != TextTag::TAG_PREFIX)
 		return {};
@@ -331,9 +331,9 @@ util::TSharedHandle<TextTagComponent> FormattedTextLine::ParseTagComponent(CharO
 					auto startAnchor = CreateAnchorPoint(offset);
 					auto endAnchor = CreateAnchorPoint(offset + endOffset);
 					if(isClosingTag == false)
-						return util::TSharedHandle<TextTagComponent> {new TextOpeningTagComponent {tagName, label, args, startAnchor, endAnchor}};
+						return pragma::util::TSharedHandle<TextTagComponent> {new TextOpeningTagComponent {tagName, label, args, startAnchor, endAnchor}};
 					else
-						return util::TSharedHandle<TextTagComponent> {new TextTagComponent {tagName, startAnchor, endAnchor}};
+						return pragma::util::TSharedHandle<TextTagComponent> {new TextTagComponent {tagName, startAnchor, endAnchor}};
 				}
 				switch(stage) {
 				case Stage::TagName:

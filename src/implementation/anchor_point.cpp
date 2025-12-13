@@ -7,11 +7,11 @@ module pragma.string.formatted_text;
 
 import :anchor_point;
 
-using namespace util::text;
+using namespace pragma::string;
 
 AnchorPoint::AnchorPoint(TextOffset charOffset, bool allowOutOfBounds) : m_wpLine {}, m_charOffset {charOffset}, m_bAllowOutOfBounds {allowOutOfBounds} {}
 
-util::TSharedHandle<AnchorPoint> AnchorPoint::GetHandle() { return util::claim_shared_handle_ownership(m_handle); }
+pragma::util::TSharedHandle<AnchorPoint> AnchorPoint::GetHandle() { return pragma::util::claim_shared_handle_ownership(m_handle); }
 bool AnchorPoint::IsValid() const { return m_wpLine.expired() == false; }
 
 bool AnchorPoint::operator==(const AnchorPoint &other) const { return IsValid() && other.IsValid() && m_charOffset == other.m_charOffset && m_bAllowOutOfBounds == other.m_bAllowOutOfBounds; }
@@ -96,8 +96,8 @@ void AnchorPoint::SetOffset(TextOffset offset)
 
 ////////////
 
-const std::vector<util::TWeakSharedHandle<AnchorPoint>> &LineStartAnchorPoint::GetChildren() const { return const_cast<LineStartAnchorPoint *>(this)->GetChildren(); }
-std::vector<util::TWeakSharedHandle<AnchorPoint>> &LineStartAnchorPoint::GetChildren() { return m_children; }
+const std::vector<pragma::util::TWeakSharedHandle<AnchorPoint>> &LineStartAnchorPoint::GetChildren() const { return const_cast<LineStartAnchorPoint *>(this)->GetChildren(); }
+std::vector<pragma::util::TWeakSharedHandle<AnchorPoint>> &LineStartAnchorPoint::GetChildren() { return m_children; }
 void LineStartAnchorPoint::RemoveChild(const AnchorPoint &anchorPoint)
 {
 	auto it = std::find_if(m_children.begin(), m_children.end(), [&anchorPoint](const util::TWeakSharedHandle<AnchorPoint> &hChild) { return hChild.IsValid() && hChild.Get() == &anchorPoint; });

@@ -9,8 +9,8 @@ export import :text_line;
 export import pragma.string.unicode;
 export import pragma.util;
 
-export namespace util {
-	namespace text {
+export namespace pragma {
+	namespace string {
 		class FormattedText;
 		class TextTagComponent;
 		class LineStartAnchorPoint;
@@ -27,10 +27,10 @@ export namespace util {
 			const TextLine &GetUnformattedLine() const;
 			TextLine &GetUnformattedLine();
 
-			CharOffset AppendString(const pragma::string::Utf8StringView &str);
-			std::optional<CharOffset> InsertString(const pragma::string::Utf8StringView &str, CharOffset charOffset);
-			pragma::string::Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
-			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, pragma::string::Utf8String *outErasedString = nullptr);
+			CharOffset AppendString(const Utf8StringView &str);
+			std::optional<CharOffset> InsertString(const Utf8StringView &str, CharOffset charOffset);
+			Utf8StringView Substr(CharOffset offset, TextLength len = UNTIL_THE_END) const;
+			std::optional<TextLength> Erase(CharOffset startOffset, TextLength len = UNTIL_THE_END, Utf8String *outErasedString = nullptr);
 			bool Move(CharOffset startOffset, TextLength len, FormattedTextLine &moveTarget, CharOffset targetCharOffset = LAST_CHAR);
 
 			std::vector<util::TSharedHandle<TextTagComponent>> &GetTagComponents();
@@ -75,9 +75,9 @@ export namespace util {
 			// oldLineLen = original length of this line before the modification that caused the shift
 			// was applied
 			void ShiftAnchors(CharOffset startOffset, TextLength len, ShiftOffset shiftAmount, TextLength oldLineLen);
-			std::vector<TSharedHandle<AnchorPoint>> DetachAnchorPoints(CharOffset startOffset, TextLength len = UNTIL_THE_END);
-			void AttachAnchorPoints(std::vector<TSharedHandle<AnchorPoint>> &anchorPoints, ShiftOffset shiftOffset = 0);
-			util::TSharedHandle<TextTagComponent> ParseTagComponent(CharOffset offset, const pragma::string::Utf8StringView &str);
+			std::vector<util::TSharedHandle<AnchorPoint>> DetachAnchorPoints(CharOffset startOffset, TextLength len = UNTIL_THE_END);
+			void AttachAnchorPoints(std::vector<util::TSharedHandle<AnchorPoint>> &anchorPoints, ShiftOffset shiftOffset = 0);
+			util::TSharedHandle<TextTagComponent> ParseTagComponent(CharOffset offset, const Utf8StringView &str);
 			friend FormattedText;
 			friend AnchorPoint;
 		  private:

@@ -12,8 +12,8 @@ export import :text_line;
 export import pragma.string.unicode;
 export import pragma.util;
 
-export namespace util {
-	namespace text {
+export namespace pragma {
+	namespace string {
 		class AnchorPoint;
 		class TextTag;
 		class TextTagComponent;
@@ -35,31 +35,31 @@ export namespace util {
 				std::function<void()> onTagsCleared = nullptr;
 			};
 
-			static std::shared_ptr<FormattedText> Create(const pragma::string::Utf8StringView &text = {});
+			static std::shared_ptr<FormattedText> Create(const Utf8StringView &text = {});
 			virtual ~FormattedText() = default;
-			void AppendText(const pragma::string::Utf8StringArg &text);
-			bool InsertText(const pragma::string::Utf8StringArg &text, LineIndex lineIdx, CharOffset charOffset = LAST_CHAR);
-			void AppendLine(const pragma::string::Utf8StringArg &line);
+			void AppendText(const Utf8StringArg &text);
+			bool InsertText(const Utf8StringArg &text, LineIndex lineIdx, CharOffset charOffset = LAST_CHAR);
+			void AppendLine(const Utf8StringArg &line);
 			void PopFrontLine();
 			void PopBackLine();
 			void RemoveLine(LineIndex lineIdx);
 			bool RemoveText(LineIndex lineIdx, CharOffset charOffset, TextLength len);
 			bool RemoveText(TextOffset offset, TextLength len);
 			bool MoveText(LineIndex lineIdx, CharOffset startOffset, TextLength len, LineIndex targetLineIdx, CharOffset targetCharOffset = LAST_CHAR);
-			void SetText(const pragma::string::Utf8StringView &text);
-			pragma::string::Utf8String Substr(TextOffset startOffset, TextLength len) const;
+			void SetText(const Utf8StringView &text);
+			Utf8String Substr(TextOffset startOffset, TextLength len) const;
 			void Clear();
 			util::TSharedHandle<AnchorPoint> CreateAnchorPoint(LineIndex lineIdx, CharOffset charOffset, bool allowOutOfBounds = false);
 			util::TSharedHandle<AnchorPoint> CreateAnchorPoint(TextOffset offset, bool allowOutOfBounds = false);
-			bool operator==(const pragma::string::Utf8StringView &text) const;
-			bool operator!=(const pragma::string::Utf8StringView &text) const;
+			bool operator==(const Utf8StringView &text) const;
+			bool operator!=(const Utf8StringView &text) const;
 			operator pragma::string::Utf8String() const;
 
 			std::optional<TextOffset> GetFormattedTextOffset(TextOffset offset) const;
 			std::optional<TextOffset> GetUnformattedTextOffset(TextOffset offset) const;
 
-			const pragma::string::Utf8String &GetUnformattedText() const;
-			const pragma::string::Utf8String &GetFormattedText() const;
+			const Utf8String &GetUnformattedText() const;
+			const Utf8String &GetFormattedText() const;
 
 			uint32_t GetMaxLineCount() const { return m_maxLineCount; }
 			void SetMaxLineCount(uint32_t c) { m_maxLineCount = c; }
@@ -92,8 +92,8 @@ export namespace util {
 			FormattedText() = default;
 			LineIndex InsertLine(FormattedTextLine &line, LineIndex lineIdx = LAST_LINE);
 			void RemoveLine(LineIndex lineIdx, bool preserveTags);
-			void RemoveEmptyTags(util::text::LineIndex lineIndex, bool fromEnd = false);
-			TextOffset FindFirstVisibleChar(util::text::LineIndex lineIndex, bool fromEnd = false) const;
+			void RemoveEmptyTags(LineIndex lineIndex, bool fromEnd = false);
+			TextOffset FindFirstVisibleChar(LineIndex lineIndex, bool fromEnd = false) const;
 
 			void OnLineAdded(FormattedTextLine &line);
 			void OnLineRemoved(FormattedTextLine &line);
@@ -101,14 +101,14 @@ export namespace util {
 			Callbacks m_callbacks = {};
 
 			void ParseTags(LineIndex lineIdx, CharOffset offset = 0, TextLength len = UNTIL_THE_END);
-			void ParseText(const pragma::string::Utf8StringView &text, std::vector<PFormattedTextLine> &outLines);
+			void ParseText(const Utf8StringView &text, std::vector<PFormattedTextLine> &outLines);
 			void UpdateTextInfo() const;
 			void UpdateTextOffsets(LineIndex lineStartIdx = 0);
 			struct {
 				uint32_t lineCount = 0u;
 				TextLength charCount = 0u;
-				pragma::string::Utf8String unformattedText = "";
-				pragma::string::Utf8String formattedText = "";
+				Utf8String unformattedText = "";
+				Utf8String formattedText = "";
 			} mutable m_textInfo = {};
 			mutable bool m_bDirty = true;
 			uint32_t m_maxLineCount = std::numeric_limits<uint32_t>::max();

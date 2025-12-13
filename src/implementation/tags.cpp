@@ -7,7 +7,7 @@ module pragma.string.formatted_text;
 
 import :core;
 
-using namespace util::text;
+using namespace pragma::string;
 
 void FormattedText::ParseTags(LineIndex lineIdx, CharOffset offset, TextLength len)
 {
@@ -140,7 +140,7 @@ void FormattedText::ParseTags(LineIndex lineIdx, CharOffset offset, TextLength l
 		if(hTagComponent->IsOpeningTag()) {
 			auto offset = hTagComponent->GetStartAnchorPoint()->GetTextCharOffset();
 			auto itInsert = std::find_if(m_tags.begin(), m_tags.end(), [offset](const util::TSharedHandle<TextTag> &tag) { return tag->IsValid() && tag->GetOpeningTagComponent()->GetStartAnchorPoint()->GetTextCharOffset() > offset; });
-			auto tag = util::TSharedHandle<TextTag> {new TextTag {*this, hTagComponent}};
+			auto tag = pragma::util::TSharedHandle<TextTag> {new TextTag {*this, hTagComponent}};
 			m_tags.insert(itInsert, tag);
 			newOpenTags.push_back(tag);
 		}

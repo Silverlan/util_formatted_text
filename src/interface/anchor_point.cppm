@@ -8,8 +8,8 @@ export module pragma.string.formatted_text:anchor_point;
 export import :types;
 export import pragma.util;
 
-export namespace util {
-	namespace text {
+export namespace pragma {
+	namespace string {
 		class FormattedTextLine;
 		class LineStartAnchorPoint;
 		class AnchorPoint {
@@ -17,7 +17,7 @@ export namespace util {
 			template<class TAnchorPoint = AnchorPoint>
 			static util::TSharedHandle<TAnchorPoint> Create(FormattedTextLine &line, bool allowOutOfBounds = false)
 			{
-				auto hAnchorPoint = util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
+				auto hAnchorPoint = pragma::util::TSharedHandle<TAnchorPoint> {new TAnchorPoint {allowOutOfBounds}};
 				hAnchorPoint->m_handle = util::shared_handle_cast<TAnchorPoint, AnchorPoint>(hAnchorPoint);
 				hAnchorPoint->SetLine(line);
 				return hAnchorPoint;

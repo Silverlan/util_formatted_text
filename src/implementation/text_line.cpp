@@ -7,12 +7,12 @@ module pragma.string.formatted_text;
 
 import :text_line;
 
-using namespace util::text;
+using namespace pragma::string;
 
 TextLine::TextLine(const std::string &line) : m_line {line} {}
 
 void TextLine::AppendCharacter(int32_t c) { m_line += c; }
-bool TextLine::InsertString(const pragma::string::Utf8StringView &str, CharOffset charOffset)
+bool TextLine::InsertString(const Utf8StringView &str, CharOffset charOffset)
 {
 	if(charOffset == LAST_CHAR)
 		charOffset = m_line.length();
@@ -24,7 +24,7 @@ bool TextLine::InsertString(const pragma::string::Utf8StringView &str, CharOffse
 
 TextLength TextLine::GetLength() const { return m_line.length(); }
 TextLength TextLine::GetAbsLength() const { return GetLength() + 1; }
-const pragma::string::Utf8String &TextLine::GetText() const { return m_line; }
+const Utf8String &TextLine::GetText() const { return m_line; }
 int32_t TextLine::At(CharOffset offset) const { return m_line.at(offset); }
 std::optional<int32_t> TextLine::GetChar(CharOffset offset) const
 {
@@ -35,14 +35,14 @@ std::optional<int32_t> TextLine::GetChar(CharOffset offset) const
 
 void TextLine::Clear() { m_line.clear(); }
 void TextLine::Reserve(TextLength len) { /*m_line.reserve(len);*/ }
-pragma::string::Utf8StringView TextLine::Substr(CharOffset offset, TextLength len) const
+Utf8StringView TextLine::Substr(CharOffset offset, TextLength len) const
 {
 	if(offset >= m_line.length())
 		return {};
-	return pragma::string::Utf8StringView {m_line}.substr(offset, len);
+	return Utf8StringView {m_line}.substr(offset, len);
 }
 bool TextLine::CanErase(CharOffset startOffset, TextLength len) const { return startOffset < m_line.size() && len > 0; }
-std::optional<TextLength> TextLine::Erase(CharOffset startOffset, TextLength len, pragma::string::Utf8String *outErasedString)
+std::optional<TextLength> TextLine::Erase(CharOffset startOffset, TextLength len, Utf8String *outErasedString)
 {
 	if(outErasedString)
 		*outErasedString = "";
@@ -57,12 +57,12 @@ std::optional<TextLength> TextLine::Erase(CharOffset startOffset, TextLength len
 	return endOffset - startOffset + 1;
 }
 
-TextLine &TextLine::operator=(const pragma::string::Utf8String &line)
+TextLine &TextLine::operator=(const Utf8String &line)
 {
 	m_line = line;
 	return *this;
 }
-bool TextLine::operator==(const pragma::string::Utf8StringView &line) { return pragma::string::Utf8StringView {m_line} == line; }
+bool TextLine::operator==(const Utf8StringView &line) { return Utf8StringView {m_line} == line; }
 TextLine::operator const pragma::string::Utf8String &() const { return m_line; }
 TextLine::operator const char16_t *() { return m_line.data(); }
 
